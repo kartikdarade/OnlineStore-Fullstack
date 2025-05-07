@@ -1,19 +1,18 @@
 // src/pages/Cart.js
+import { useContext } from 'react';
 import './Cart.css';
+import { CartContext } from '../context/CartContext';
 
-const dummyCart = [
-  { id: 1, name: 'Smartphone', price: 19999, quantity: 1, image: 'https://via.placeholder.com/100' },
-  { id: 2, name: 'Headphones', price: 2999, quantity: 2, image: 'https://via.placeholder.com/100' },
-];
 
 function Cart() {
-  const total = dummyCart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-
+  const {cart, removeFromCart} = useContext(CartContext);
+  const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+ 
   return (
     <div className="cart-container">
       <h1>Your Cart 🛒</h1>
 
-      {dummyCart.length === 0 ? (
+      {cart.length === 0 ? (
         <p>Your cart is empty.</p>
       ) : (
         <>
@@ -24,10 +23,11 @@ function Cart() {
                 <th>Price (₹)</th>
                 <th>Quantity</th>
                 <th>Subtotal (₹)</th>
+                <th>Action</th>
               </tr>
             </thead>
             <tbody>
-              {dummyCart.map(item => (
+              {cart.map(item => (
                 <tr key={item.id}>
                   <td className="product-cell">
                     <img src={item.image} alt={item.name} />
@@ -36,6 +36,11 @@ function Cart() {
                   <td>{item.price}</td>
                   <td>{item.quantity}</td>
                   <td>{item.price * item.quantity}</td>
+                  <td>
+                    <button onClick={() => removeFromCart(item.id)}>
+                      ❌ Remove
+                    </button>
+                  </td>
                 </tr>
               ))}
             </tbody>

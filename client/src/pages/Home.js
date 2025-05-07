@@ -1,7 +1,8 @@
-import react from 'react';
-import { useState, useEffect } from 'react';
+import react, { useContext } from 'react';
 import "./Home.css";
 import { Link } from 'react-router-dom';
+import { CartContext } from '../context/CartContext';
+import {toast} from 'react-toastify';
 
 const dummyProducts = [
     { id: 1, name: 'Smartphone', price: 19999, image: 'https://via.placeholder.com/150' },
@@ -11,6 +12,11 @@ const dummyProducts = [
 ]
 
 function Home() {
+    const {addToCart} = useContext(CartContext);
+    const handleAddToCart = product => {
+        addToCart(product);
+        toast.success(`${product.name} added to cart!`);
+    }
     return (
         <div className="home-container">
             <h1>Welcome to Darade Store  🛍️</h1>
@@ -23,6 +29,7 @@ function Home() {
                         <Link to = {`/product/${product.id}`}>
                           <button>View Details</button>
                         </Link>
+                        <button onClick={()=>handleAddToCart(product)}>Add to cart</button>
                     </div>
                 ))}
             </div>
